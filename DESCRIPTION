@@ -1,0 +1,23 @@
+Package: idalgo
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: CC0
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    data.tree,
+    causaleffect,
+    igraph,
+    googledrive,
+    rlang (>= 0.1.2),
+    magrittr,
+    tibble
+Suggests: 
+    roxygen2
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1

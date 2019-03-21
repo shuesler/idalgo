@@ -1,0 +1,6 @@
+^docs$
+^_pkgdown\.yml$
+^idalgo\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^.*\.Rproj$
