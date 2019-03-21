@@ -1,3 +1,4 @@
+#' @export
 make_arg_tibble <- function(plotvec, path = "~/graphen/") {
 
   tibble::tibble(

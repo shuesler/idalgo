@@ -1,3 +1,4 @@
+#' @export
 uploader <- function(media, path, name) {
 
   googledrive::drive_upload(

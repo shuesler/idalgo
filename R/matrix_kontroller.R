@@ -1,3 +1,4 @@
+#' @export
 matrix_kontroller <- function(x) {
   if (is.null(x)) {
     NULL

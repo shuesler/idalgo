@@ -1,3 +1,4 @@
+#' @export
 shseval <- function(x, code = FALSE) {
 
   tmp  <- tempfile(fileext = ".R")

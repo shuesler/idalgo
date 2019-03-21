@@ -11,8 +11,8 @@
 #doll  <- magrittr::use_series
 options(tibble.print_min = 100)
 ##########################################################################################################
-
-devtools::load_all(".")
+library(idalgo)
+#devtools::load_all(".")
 
 # Vignetten - Beispiel
 
