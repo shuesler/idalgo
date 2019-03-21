@@ -1,0 +1,61 @@
+#' igraph Reexports
+
+#' @export
+`%->%`                <- igraph::`%->%`
+
+#' @export
+topological.sort      <- igraph::topological.sort
+
+#' @export
+edges                 <- igraph::get.edges
+
+#' @export
+edge.attributes       <- igraph::edge.attributes
+
+
+#' @export
+get.edges             <- igraph::get.edges
+
+#' @export
+get.vertex.attribute  <- igraph::get.vertex.attribute
+
+#' @export
+get.adjacency         <- igraph::get.adjacency
+
+#' @export
+E                     <- igraph::E
+
+#' @export
+V                     <- igraph::V
+
+#' @export
+subgraph.edges        <- igraph::subgraph.edges
+
+#' @export
+decompose.graph       <- igraph::decompose.graph
+
+#' @export
+
+#' @export
+induced.subgraph      <- igraph::induced.subgraph
+
+#' @export
+is.dag                <- igraph::is.dag
+
+#' @export
+edge.attributes       <- igraph::edge.attributes
+
+#' @export
+graph.formula         <- igraph::graph.formula
+
+#' @export
+set.edge.attribute    <- igraph::set.edge.attribute
+
+#' @export
+subgraph.edges        <- igraph::subgraph.edges
+
+#' @export
+neighborhood          <- igraph::neighborhood
+
+#' @export
+vcount                <- igraph::vcount

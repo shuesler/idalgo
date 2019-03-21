@@ -1,3 +1,7 @@
+^\.httr-oauth$
+^credentials\.json$
+^token\.pickle$
+^labor$
 ^docs$
 ^_pkgdown\.yml$
 ^idalgo\.Rproj$

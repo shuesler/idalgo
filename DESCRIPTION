@@ -11,12 +11,18 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.tree,
-    causaleffect,
     igraph,
     googledrive,
     rlang (>= 0.1.2),
     magrittr,
-    tibble
+    tibble,
+    ggm,
+    purrr,
+    dplyr,
+    utils,
+    stats,
+    stringr,
+    glue
 Suggests: 
     roxygen2
 Roxygen: list(markdown = TRUE)
