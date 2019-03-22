@@ -36,43 +36,9 @@ ce1   <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps 
 alles <- ce1$steps
 ##########################################################################################################
 
-geparste_liste <- function(x) {
-  x <- enquo(x)
-  igraph_addr               <- list_parser(x, "IGRAPH")
-  platzhalter_namen_igraphs <- paste0("graph", seq_along(igraph_addr))
-  expr_erw                  <- purrr::map2(igraph_addr, platzhalter_namen_igraphs, ~ rlang::expr(`<-`(!!.x, !!.y)))
-  igraph_addr_eval          <- igraph_addr %>% purrr::map(rlang::eval_bare)
+aio <- function() {
 
-  list(igraph_addr = igraph_addr, platzhalter_namen_igraphs = platzhalter_namen_igraphs, expr_erw = expr_erw, igraph_addr_eval = igraph_addr_eval)
-
-}
-
-tmptmp                     <- geparste_liste(alles)
-
-
-
-#igraph_addr               <- list_parser(alles, "IGRAPH")
-
-#platzhalter_namen_igraphs <- paste0("graph", seq_along(igraph_addr))
-#igraph_addr_eval          <- igraph_addr %>% purrr::map(rlang::eval_bare)
-##########################################################################################################
-
-upload_plots <- function(igra_addr_eval, platzh_namen_igraphs, mat = NULL) {
-
-  plotl                     <- igraph_plots_to_tmp(igra_addr_eval, lay=mat)
-
-  tib                       <- make_arg_tibble(plotl)
-
-  drive_plots               <-
-    purrr::pmap(tib, uploader) %>%
-    dplyr::bind_rows() %>%
-    dplyr::mutate(url           = paste0("https://docs.google.com/uc?id=", id),
-                  namen_igraphs = platzh_namen_igraphs)
-
-  drive_plots
-
-}
-
+tmptmp                     <- geparste_liste(quo(test))
 
 drive_pl <- upload_plots(igra_addr_eval       = tmptmp$igraph_addr_eval,
                         platzh_namen_igraphs = tmptmp$platzhalter_namen_igraphs,
@@ -80,8 +46,6 @@ drive_pl <- upload_plots(igra_addr_eval       = tmptmp$igraph_addr_eval,
 
 map(tmptmp$expr_erw, ~eval_bare(.x, env = rlang::global_env()))
 
-
-##########################################################################################################
 
 alles  <- replace_null(alles, "nichts")
 alles  <- number_unnamed(alles)
@@ -138,7 +102,7 @@ tmp2 <- tmp2 %>% dplyr::select(name_parent:path_gparent)
 
 tmp  <- dplyr::bind_cols(tmp, tmp2)
 
-oo <- purrr::map_chr(c(platzhalter_namen_igraphs, NODES), ~or_filter("werte", .x)) %>%
+oo <- purrr::map_chr(c(tmptmp$platzhalter_namen_igraphs, NODES), ~or_filter("werte", .x)) %>%
   paste0(collapse = " | ") %>%
   rlang::parse_expr()
 
@@ -200,7 +164,9 @@ fa <- colorspace::rainbow_hcl(9)
 
 tmp <- tmp %>%
   dplyr::mutate(Farbe = dplyr::case_when(
-    !!!purrr::map(platzhalter_namen_igraphs, ~ patterns_lazy("name", .x, "cyan")),
+
+    !!!purrr::map(tmptmp$platzhalter_namen_igraphs, ~ patterns_lazy("name", .x, "cyan")),
+
     expr(stringr::str_detect(.data$name, "line") ~ "red"),
 
     name == "cond"   ~  fa[1],
@@ -213,11 +179,17 @@ tmp <- tmp %>%
     name == "an"     ~  fa[8],
     name == "G"      ~  fa[9],
 
-    TRUE ~ "weiss"))
+    TRUE ~ "white"))
 
 
 tmp2$Set(Farbe=tmp$Farbe)
 tmp2$Set(Bild =tmp$bild)
+
+
+tmp2
+
+}
+
 
 collapsibleTree::collapsibleTree(tmp2,
                                  fill        = "Farbe",
