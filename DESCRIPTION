@@ -24,7 +24,8 @@ Imports:
     stringr,
     glue,
     collapsibleTree,
-    colorspace
+    colorspace,
+    listviewer
 Suggests: 
     roxygen2
 Roxygen: list(markdown = TRUE)
