@@ -3,9 +3,8 @@
 
 #' @export
 igraph_plots_to_tmp <- function(igraphs, lay = NULL, open = FALSE) {
-  platzhalter_namen_igraphs <<- paste0("graph", seq_along(igraphs))
-  plotliste <- list()
 
+  plotliste <- list()
 
   for (i in seq_along(igraphs)) {
     tmp            <- tempfile(fileext = ".jpeg")

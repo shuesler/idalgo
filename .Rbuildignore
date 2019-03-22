@@ -1,3 +1,4 @@
+^ausschluss$
 ^\.httr-oauth$
 ^credentials\.json$
 ^token\.pickle$

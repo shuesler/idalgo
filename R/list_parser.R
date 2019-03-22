@@ -1,7 +1,7 @@
 #' @export
 list_parser <- function(x, y) {
 
-  x      <- rlang::enquo(x)
+
   x_char <- rlang::quo_name(x)
 
   tmp    <- tempfile(fileext = ".txt")

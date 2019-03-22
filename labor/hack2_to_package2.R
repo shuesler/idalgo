@@ -13,7 +13,6 @@
 #options(tibble.print_min = 100)
 ##########################################################################################################
 library(idalgo)
-#devtools::load_all(".")
 
 # Vignetten - Beispiel
 
@@ -35,525 +34,51 @@ NODES <- names(V(fig1))
 ce1   <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps = TRUE)
 
 alles <- ce1$steps
-
-# ref(alles)
-
 ##########################################################################################################
 
-# Smoking - Beispiel
+geparste_liste <- function(x) {
+  x <- enquo(x)
+  igraph_addr               <- list_parser(x, "IGRAPH")
+  platzhalter_namen_igraphs <- paste0("graph", seq_along(igraph_addr))
+  expr_erw                  <- purrr::map2(igraph_addr, platzhalter_namen_igraphs, ~ rlang::expr(`<-`(!!.x, !!.y)))
+  igraph_addr_eval          <- igraph_addr %>% purrr::map(rlang::eval_bare)
+
+  list(igraph_addr = igraph_addr, platzhalter_namen_igraphs = platzhalter_namen_igraphs, expr_erw = expr_erw, igraph_addr_eval = igraph_addr_eval)
 
-#fig1    <- igraph::graph.formula(X -+ Z, Z -+ Y, X -+ Y, Y -+ X,simplify = FALSE)
-#fig1    <- igraph::set.edge.attribute(graph = fig1, name  = "description", index = c(3,4), value = "U")
-#
-#NODES   <- names(V(fig1))
-#
-#ce1     <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps = TRUE, primes = T)
-#
-#ce1$P %>% katexR::katex()
-#
-#alles   <- ce1$steps
-
-##########################################################################################################
-
-# Hernan 20.3
-
-# Auf Seite 19 (Teil III) steht:
-# Table 20.1 shows data from a sequentially randomized trial with treatmentconfounder
-# feedback, as represented by the causal diagram in Figure 20.3.
-
-#fig1  <- graph.formula(
-#  L0 -+ A0,
-#  A0 - +L1,
-#  L1 - +A1,
-#  L0 ++ Y,
-#  L1 ++ Y,
-#  simplify = FALSE)
-#
-#fig1  <- igraph::set.edge.attribute(graph = fig1, name  = "description",index = c(4,7), value = "U")
-#
-#NODES <- names(V(fig1))
-#
-#ce1   <- causal.effect(y="Y", x=c("A0", "A1"), G = fig1, primes = T, steps = T)
-#
-#ce1$P %>% katexR::katex()
-#
-#alles <- ce1$steps
-
-##########################################################################################################
-
-igraph_addr               <- list_parser(alles, "IGRAPH")
-
-platzhalter_namen_igraphs <- paste0("graph", 1:8)
-
-expr_erw                  <- purrr::map2(igraph_addr, platzhalter_namen_igraphs, ~ rlang::expr(`<-`(!!.x, !!.y)))
-
-eval_bare                 <- rlang::eval_bare
-map                       <- purrr::map
-
-map(expr_erw, ~eval_bare(.x, env = rlang::global_env()))
-
-alles
-
-
-##########################################################################################################
-##########################################################################################################
-#https://stackoverflow.com/questions/29818918/looping-nested-lists-in-r/29819032
-
-
-nms <- names(methods:::.BasicFunsList)        ## ?.BasicFunsList for more info
-
-length(nms)
-c(head(nms, 8), tail(nms, 8))
-
-
-
-library(lobstr)
-
-#https://stackoverflow.com/questions/29818918/looping-nested-lists-in-r/29819032
-#foo <- function(l){
-#  lapply(l, function(x) if(is.list(x) && length(x)==0) "" else if(is.list(x)) foo(x) else x)
-#}
-
-
-
-
-
-
-alles[["branch"]][[3]][["branch"]][[1]][["call"]][["G"]] <- "test"
-
-
-library(rlang)
-library(magrittr)
-
-
-rosi <- iris
-
-hello <- rep("hello", 150)
-
-head(rosi)
-
-expr(rosi[["sils"]] <- hello) %>% eval_tidy(env=global_env())
-
-head(rosi)
-
-expr(rosi[["sils"]] <- hello) %>% eval_bare(env=global_env())
-
-head(rosi)
-
-
-
-
-
-`<-`(rosi[["sils"]], hello)
-
-
-
-
-
-
-sils <- iris
-
-inset2(globalenv()$sils, "hh", value = rep("hello", 150))
-
-
-
-
-
-hh <- 'branch[[3]][["branch"]][[1]][["call"]][["G"]]'
-
-hh <- parse_quo(hh, alles)
-
-
-eval_tidy(expr(G %<>% "haus"), data = alles[["branch"]][[3]][["branch"]][[1]][["call"]])
-
-
-
-dm$.top_env
-
-
-env_poke(env = dm, nm = "G", "hello")
-
-
-dm <- as_data_mask(alles[["branch"]][[3]][["branch"]][[1]][["call"]])
-
-
-expr(`$`(alles, !!hh))
-
-
-sils
-
-
-`%su%` <- `[[`
-
-hello <-  `[[<-`
-
-
-
-
-
-
-
-hello(iris, rep("hello", 150), "Species")
-
-library(magrittr)
-
-alles %su% "branch" %su% 3  %su% "branch" %su% 1 %su% "call" %su% "G" `<-` c("test2", "s")
-
-
-#la <- lazyeval::as.lazy_dots(igraph_addr)
-#la <- lazyeval::as.lazy_dots(igraph_addr, globalenv())
-#lazyeval::lazy_eval(la)
-
-
-
-
-igraph_addr               <- purrr::map(igraph_addr, rlang::expr_name)
-
-igraph_addr               <- purrr::map(igraph_addr, ~ stringr::str_replace(.x, "\\$G", ""))
-
-igraph_addr               <- purrr::map(igraph_addr, rlang::parse_expr)
-
-
-igraph_addr2              <- purrr::map(igraph_addr, ~ rlang::expr(`[[`(!!.x, 4)))
-
-platzhalter_namen_igraphs <- paste0("graph", 1:8)
-
-igraph_addr2              <- purrr::map2(igraph_addr2, platzhalter_namen_igraphs, ~ rlang::expr(`<-`(!!.x, !!.y)))
-
-
-
-la <- lazyeval::as.lazy_dots(igraph_addr2, globalenv())
-lazyeval::lazy_eval(la)
-
-
-
-
-igraph_addr2               <- purrr::map(igraph_addr2, ~new_quosure(expr = .x, global_env()))
-
-
-
-igraph_addr2 %>% purrr::map(eval_tidy)
-
-
-function(x) {
-  printnames()
 }
 
-recurse(l=alles, func=names)
-
-igraph_addr2 %>% purrr::map(eval_tidy)
-
-
-alles
+tmptmp                     <- geparste_liste(alles)
 
 
 
+#igraph_addr               <- list_parser(alles, "IGRAPH")
 
-sils                      <-
+#platzhalter_namen_igraphs <- paste0("graph", seq_along(igraph_addr))
+#igraph_addr_eval          <- igraph_addr %>% purrr::map(rlang::eval_bare)
+##########################################################################################################
 
+upload_plots <- function(igra_addr_eval, platzh_namen_igraphs, mat = NULL) {
 
-sils %>% purrr::map(~ .x[[4]])
+  plotl                     <- igraph_plots_to_tmp(igra_addr_eval, lay=mat)
 
+  tib                       <- make_arg_tibble(plotl)
 
+  drive_plots               <-
+    purrr::pmap(tib, uploader) %>%
+    dplyr::bind_rows() %>%
+    dplyr::mutate(url           = paste0("https://docs.google.com/uc?id=", id),
+                  namen_igraphs = platzh_namen_igraphs)
 
-
-
-igraph_addr2              <- purrr::map(igraph_addr, ~ rlang::expr(`[[`(!!.x, 4)))
-
-igraph_addr2              <- purrr::map2(igraph_addr2, platzhalter_namen_igraphs, ~ rlang::expr(`<-`(!!.x, !!.y)))
-
-
-igraph_addr2 %>% purrr::map(~eval_tidy(.x, env=global_env()))
-
-igraph_addr %>% purrr::map(~eval_tidy(.x, env=global_env()))
-
-
-sils
-
-
-sils[[1]] %>% names
-
-global_env()$alles
-
-
-purrr::map(igraph_addr, as.character)
-
-
-
-
-
-
-
-a <- function(x) {
-
-rlang::get_env(unclass(x)[[10]])
+  drive_plots
 
 }
 
 
-
-b <- function(x) {
-
-  rlang::env_unbind(x, nms = "me")
-  rlang::env_unbind(x, nms = "myid")
-  rlang::env_unbind(x, nms = ".__igraph_version__.")
-
-}
-
-
-
-d <- function(x) {
-
-  rlang::env_poke(x, nm = "me",   value = "hello1")
-  rlang::env_poke(x, nm = "myid", value = "hello2")
-  rlang::env_poke(x, nm = ".__igraph_version__.", value = "hello3")
-
-}
-
-
-
-sils <- purrr::map(sils, a)
-sils <- purrr::map(sils, d)
-
-
-
-alles
-
-test <- env()
-
-
-env_bind(test, a = 1 )
-
-
-env_print(test)
-
-env_unbind(test, "a")
-
-env_print(test)
-
-
-
-
-
-
-
-
-sils <- purrr::map(sils, a)
-
-
-
-sils %>% purrr::map(class)
-sils %>% purrr::map(names)
-
-sils %>% purrr::map(env_print)
-
-sils %>% purrr::map(lobstr::ref)
-
-
-
-#alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G
-#
-#
-#
-#`<-`(`$`(`$`(`[[`(`$`(`[[`(`$`(`[[`(`$`(alles, branch), 1), branch), 1), branch),1), call), G), "graph100000")
-#
-#
-#`$`(`$`(`[[`(`$`(`[[`(`$`(`[[`(`$`(alles, branch), 1), branch), 1), branch),1), call), G)
-#
-#
-#
-#expr(`$`(`$`(`[[`(`$`(`[[`(`$`(`[[`(`$`(.xyz, branch), 1), branch), 1), branch),1), call), G)) %>% rlang::eval_bare()
-
-
-
-
-
-
-
-class(get_env(unclass(alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G)[[10]]))
-
-
-address(alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G)
-
-
-rlang::get
-
-
-
-
-
-
-lobstr::ref(alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G)
-
-
-find.by.address(address(alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G))
-
-
-lobstr::ref(ss)
-
-
-www <- rlang::get_env(www)
-
-liste <- as.list(letters)
-
-lobstr::ref(liste, character = T)
-
-
-ss <- list(env())
-
-www <- get_env(ss[[1]])
-
-
-env_print(ss[[1]])
-
-
-rlang::env_bind(rlang::get_env(ss[[1]]), a = 1)
-
-
-
-
-
-
-sils <- new_function(
-  exprs(x =),
-  expr({x$branch[[1]]$branch[[1]]$branch[[1]]$call$G})
-)
-
-
-
-aaa <- as_data_mask(alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-lobstr::ref(alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-lobstr::ref(aaa$.top_env)
-
-
-eval_tidy(expr(G), aaa)
-
-
-
-
-eval_tidy(expr(G), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-lobstr::obj_addr(alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G)
-
-
-
-
-
-
-
-eval_tidy(expr(alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G <- "hello"), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-sils(alles)
-
-
-iris$Species <- Species
-
-
-
-
-
-
-rlang::eval_tidy(rlang::expr(assign("G", "huhuhuhuu", envir = rlang::caller_env())), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-
-rlang::eval_tidy(expr(env_unbind(unclass(G)[[10]],"me", inherit = T)), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-
-
-rlang::eval_tidy(rlang::expr(silsi <<- G), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-silsi
-
-
-identical(silsi, alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G)
-
-
-lobstr::ref(silsi[1])
-
-
-
-
-
-
-
-
-rlang::eval_tidy(rlang::expr(lobstr::ref(.data$G)), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-rlang::eval_tidy(rlang::expr(`<-`(G, "hello")), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-rlang::eval_tidy(rlang::expr(lobstr::ref(G)), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-rlang::eval_tidy(expr(silsi <<- current_env()), data = alles$branch[[1]]$branch[[1]]$branch[[1]]$call)
-
-
-env_print(silsi)
-
-lobstr::ref(silsi$.env)
-
-expr(unclass(G)[[10]])
-
-
-
-
-rlang::env_unbind(www, "myid")
-rlang::env_unbind(www, "myid")
-
-rlang::env_bind(www, me="graph")
-
-lobstr::ref(www)
-
-
-
-alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G
-
-
-`<-`(`$`(`$`(`[[`(`$`(`[[`(`$`(`[[`(`$`(alles, branch), 1), branch), 1), branch),1), call), G), "graph10")
-
-
-alles$branch[[1]]$branch[[1]]$branch[[1]]$call$G
-
-
-
-
-
-rlang::expr(`<-`(`$`(`$`(`[[`(`$`(`[[`(`$`(`[[`(`$`(!!.xyz, branch), 1), branch), 1), branch),1), call), G), "graph100000")) %>% rlang::eval_bare()
-
-
-
-
-
-
-
-
-
-igraph_addr_eval <- igraph_addr %>% purrr::map(rlang::eval_tidy)
-##########################################################################################################
-
-plotl         <- igraph_plots_to_tmp(igraph_addr_eval, lay=mat)
-
-
-tib           <- make_arg_tibble(plotl)
-
-drive_plots   <-
-  purrr::pmap(tib, uploader) %>%
-  dplyr::bind_rows() %>%
-  dplyr::mutate(url           = paste0("https://docs.google.com/uc?id=", id),
-                namen_igraphs = platzhalter_namen_igraphs)
-
-##########################################################################################################
-
-expr_erw  <- purrr::map2(igraph_addr, platzhalter_namen_igraphs, ~ rlang::expr(`<-`(!!.x, !!.y)))
-
-
-expr_erw %>% shseval()
+drive_pl <- upload_plots(igra_addr_eval       = tmptmp$igraph_addr_eval,
+                        platzh_namen_igraphs = tmptmp$platzhalter_namen_igraphs,
+                        mat                  = mat)
+
+map(tmptmp$expr_erw, ~eval_bare(.x, env = rlang::global_env()))
 
 
 ##########################################################################################################
@@ -642,7 +167,7 @@ tmp$ends_digit_FALSE <- tmp$ends_digit_FALSE %>% dplyr::filter(!stringr::str_end
 
 #############################################
 
-tri <- drive_plots %>% dplyr::select(namen_igraphs, url)
+tri <- drive_pl %>% dplyr::select(namen_igraphs, url)
 
 tri <-tri %>% dplyr::mutate(bild=br_img(url)) %>% dplyr::select(werte=namen_igraphs, bild)
 
