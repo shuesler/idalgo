@@ -22,7 +22,9 @@ Imports:
     utils,
     stats,
     stringr,
-    glue
+    glue,
+    collapsibleTree,
+    colorspace
 Suggests: 
     roxygen2
 Roxygen: list(markdown = TRUE)
