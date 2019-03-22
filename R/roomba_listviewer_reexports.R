@@ -28,31 +28,31 @@ dfs_idx <- function (.x, .f)
   res
 }
 
-#' @export
-number_unnamed <- function (l)
-{
-  recurse(l, add_number_names)
-}
 
-#' @export
-recurse <- function (l, func, ...)
-{
-  l <- func(l, ...)
-  if (is.list(l) && length(l) > 0) {
-    lapply(l, function(ll) {
-      recurse(ll, func, ...)
-    })
-  }
-  else {
-    l
-  }
-}
-
-#' @export
-add_number_names <- function (l)
-{
-  if (length(l) > 1 && is.null(names(l))) {
-    names(l) <- seq_len(length(l))
-  }
-  l
-}
+#number_unnamed <- function (l)
+#{
+#  recurse(l, add_number_names)
+#}
+#
+#
+#recurse <- function (l, func, ...)
+#{
+#  l <- func(l, ...)
+#  if (is.list(l) && length(l) > 0) {
+#    lapply(l, function(ll) {
+#      recurse(ll, func, ...)
+#    })
+#  }
+#  else {
+#    l
+#  }
+#}
+#
+#
+#add_number_names <- function (l)
+#{
+#  if (length(l) > 1 && is.null(names(l))) {
+#    names(l) <- seq_len(length(l))
+#  }
+#  l
+#}

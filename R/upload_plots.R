@@ -1,7 +1,7 @@
 #' @export
-upload_plots <- function(igra_addr_eval, platzh_namen_igraphs, mat = NULL) {
+upload_plots <- function(igra_addr_eval, platzh_namen_igraphs) {
 
-  plotl                     <- igraph_plots_to_tmp(igra_addr_eval, lay=mat)
+  plotl                     <- igraph_plots_to_tmp(igra_addr_eval)
 
   tib                       <- make_arg_tibble(plotl)
 

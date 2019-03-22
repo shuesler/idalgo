@@ -25,7 +25,10 @@ Imports:
     glue,
     collapsibleTree,
     colorspace,
-    listviewer
+    listviewer,
+    XML,
+    multiplex,
+    here
 Suggests: 
     roxygen2
 Roxygen: list(markdown = TRUE)

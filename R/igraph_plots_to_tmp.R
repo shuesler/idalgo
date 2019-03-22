@@ -2,7 +2,7 @@
 #' importFrom("graphics", "plot")
 
 #' @export
-igraph_plots_to_tmp <- function(igraphs, lay = NULL, open = FALSE) {
+igraph_plots_to_tmp <- function(igraphs, open = FALSE) {
 
   plotliste <- list()
 
@@ -10,16 +10,14 @@ igraph_plots_to_tmp <- function(igraphs, lay = NULL, open = FALSE) {
     tmp            <- tempfile(fileext = ".jpeg")
     jpeg(tmp)
     set.seed(1)
-    graph          <- igraphs[[i]]
-    tmp99          <- matrix_kontroller(lay[names(V(graph)),])
-    plot(graph, layout = tmp99)
+    plot( igraphs[[i]])
     dev.off()
 
     plotliste[[i]] <- tmp
   }
 
   if (open) {
-    fold <- plotliste %>% str_split("file") %>% `[[`(1) %>% `[[`(1)
+    fold <- plotliste %>% stringr::str_split("file") %>% `[[`(1) %>% `[[`(1)
     shell.exec(fold)
   }
 

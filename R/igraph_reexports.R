@@ -12,9 +12,11 @@ edges                 <- igraph::get.edges
 #' @export
 edge.attributes       <- igraph::edge.attributes
 
-
 #' @export
 get.edges             <- igraph::get.edges
+
+#' @export
+set_graph_attr        <- igraph::set_graph_attr
 
 #' @export
 get.vertex.attribute  <- igraph::get.vertex.attribute
@@ -29,12 +31,13 @@ E                     <- igraph::E
 V                     <- igraph::V
 
 #' @export
+graph_attr_names      <- igraph::graph_attr_names
+
+#' @export
 subgraph.edges        <- igraph::subgraph.edges
 
 #' @export
 decompose.graph       <- igraph::decompose.graph
-
-#' @export
 
 #' @export
 induced.subgraph      <- igraph::induced.subgraph

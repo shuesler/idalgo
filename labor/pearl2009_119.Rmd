@@ -1,0 +1,38 @@
+---
+title: "Untitled"
+author: "shs"
+date: "22 3 2019"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(idalgo)
+```
+
+```{r}
+file_gml     <- read.gml(here::here("labor", "pearl2009_119.gml"), coords = T)
+```
+
+```{r}
+file_graphml <- parse.graphml(here::here("labor", "pearl2009_119.graphml"))
+```
+
+```{r}
+sils         <- as.matrix(data.frame(x=file_gml$coord$X, y=file_gml$coord$Y))
+
+sils         <- unname(sils)
+
+file_graphml <- set_graph_attr(file_graphml, name = "layout", sils)
+
+```
+
+```{r}
+plot(file_graphml)
+```
+
+```{r}
+graph_attr_names(file_graphml)
+```
+

@@ -1,13 +1,12 @@
 #' @export
-aio <- function(schritte, mat = NULL) {
+aio <- function(schritte) {
   schritte <- enquo(schritte)
 
   tmptmp   <- geparste_liste(schritte)
 
   drive_pl <- upload_plots(
     igra_addr_eval = tmptmp$igraph_addr_eval,
-    platzh_namen_igraphs = tmptmp$platzhalter_namen_igraphs,
-    mat = mat
+    platzh_namen_igraphs = tmptmp$platzhalter_namen_igraphs
   )
 
   map(tmptmp$expr_erw, ~ eval_bare(.x, env = rlang::global_env()))

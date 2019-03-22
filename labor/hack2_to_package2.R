@@ -16,31 +16,22 @@ library(idalgo)
 #
 ## Vignetten - Beispiel
 #
-fig1  <- graph.formula(W - +X, W - +Z, X - +Z, Z - +Y, X - +Y, Y - +X, simplify = FALSE)
-fig1  <- set.edge.attribute(graph = fig1, name = "description", index = c(5, 6), value = "U")
+fig1   <- graph.formula(W - +X, W - +Z, X - +Z, Z - +Y, X - +Y, Y - +X, simplify = FALSE)
+fig1   <- set.edge.attribute(graph = fig1, name = "description", index = c(5, 6), value = "U")
+fig1   <- set_graph_attr(fig1, name = "layout", matrix(nrow = 4,ncol = 2,byrow = T, data = c(1, 1,0, 0,2, 0,2, 3)))
 
-mat   <- matrix(nrow = 4,ncol = 2,byrow = T,
-                data = c(
-                  1, 1, # w
-                  0, 0, # x
-                  2, 0, # z
-                  2, 3  # y
-                ))
+NODES  <- names(V(fig1))
 
-row.names(mat) <- c("W", "X", "Z", "Y")
+ce1    <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps = TRUE)
 
-NODES <- names(V(fig1))
-
-ce1   <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps = TRUE)
-
-alles <- ce1$steps
+alles  <- ce1$steps
 
 # ------------------------------
 
 tester <- alles
 rm(alles)
 
-tmp2 <- aio(tester, mat)
+tmp2 <- aio(tester)
 
 collapsibleTree::collapsibleTree(tmp2,
                                  fill        = "Farbe",

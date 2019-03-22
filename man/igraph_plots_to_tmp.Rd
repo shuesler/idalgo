@@ -5,7 +5,7 @@
 \title{importFrom("grDevices", "dev.off", "jpeg")
 importFrom("graphics", "plot")}
 \usage{
-igraph_plots_to_tmp(igraphs, lay = NULL, open = FALSE)
+igraph_plots_to_tmp(igraphs, open = FALSE)
 }
 \description{
 importFrom("grDevices", "dev.off", "jpeg")

@@ -1,6 +1,9 @@
 #' diverse Reexports
 
 #' @export
+read.gml <- multiplex::read.gml
+
+#' @export
 map         <- purrr::map
 
 #' @export
