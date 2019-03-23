@@ -67,7 +67,7 @@ aio <- function(schritte) {
 
   tmp  <- dplyr::bind_cols(tmp, tmp2)
 
-  oo <- purrr::map_chr(c(tmptmp$platzhalter_namen_igraphs, NODES), ~or_filter("werte", .x)) %>%
+  oo <- purrr::map_chr(c(tmptmp$platzhalter_namen_igraphs, tmptmp$NODES), ~or_filter("werte", .x)) %>%
     paste0(collapse = " | ") %>%
     rlang::parse_expr()
 

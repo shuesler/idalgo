@@ -20,7 +20,7 @@ fig1   <- graph.formula(W - +X, W - +Z, X - +Z, Z - +Y, X - +Y, Y - +X, simplify
 fig1   <- set.edge.attribute(graph = fig1, name = "description", index = c(5, 6), value = "U")
 fig1   <- set_graph_attr(fig1, name = "layout", matrix(nrow = 4,ncol = 2,byrow = T, data = c(1, 1,0, 0,2, 0,2, 3)))
 
-NODES  <- names(V(fig1))
+#NODES  <- names(V(fig1))
 
 ce1    <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps = TRUE)
 
@@ -51,7 +51,7 @@ library(idalgo)
 fig1    <- igraph::graph.formula(X -+ Z, Z -+ Y, X -+ Y, Y -+ X,simplify = FALSE)
 fig1    <- igraph::set.edge.attribute(graph = fig1, name  = "description", index = c(3,4), value = "U")
 
-NODES   <- names(V(fig1))
+#NODES   <- names(V(fig1))
 
 ce1     <- causal.effect(y = "Y", x = "X", z = NULL, G = fig1, expr = TRUE, steps = TRUE, primes = T)
 
@@ -95,7 +95,7 @@ fig1  <- graph.formula(
 
 fig1  <- igraph::set.edge.attribute(graph = fig1, name  = "description",index = c(4,7), value = "U")
 
-NODES <- names(V(fig1))
+#NODES <- names(V(fig1))
 
 ce1   <- causal.effect(y="Y", x=c("A0", "A1"), G = fig1, primes = T, steps = T)
 

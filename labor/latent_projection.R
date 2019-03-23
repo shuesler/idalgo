@@ -13,9 +13,17 @@ options(tibble.print_min = 100)
 
 # --------------------------------------------
 # Smoking:
+#gml   <- read.gml("C:\\Users\\shs\\Desktop\\graph_ed\\2.gml", coords = T)
+
 G     <- parse.graphml("C:\\Users\\shs\\Desktop\\graph_ed\\2.graphml")
 
+#G <- set_graph_attr(G, "layout", as.matrix(data.frame(gml$coord[[1]], gml$coord[[2]])) %>% unname())
+
+plot(G)
+
 sils  <- causaleffect:::latent.projection(G, "gene")
+
+plot(sils)
 
 ce1   <- causal.effect(y = "Y", x = "X", z = NULL, G = sils, expr = TRUE, steps = TRUE, primes = T)
 

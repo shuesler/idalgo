@@ -19,7 +19,19 @@ get.edges             <- igraph::get.edges
 set_graph_attr        <- igraph::set_graph_attr
 
 #' @export
+set_edge_attr         <- igraph::set_edge_attr
+
+#' @export
 get.vertex.attribute  <- igraph::get.vertex.attribute
+
+#' @export
+get.graph.attribute   <- igraph::get.graph.attribute
+
+#' @export
+get.edge.attribute    <- igraph::get.edge.attribute
+
+#' @export
+set.edge.attribute    <- igraph::set.edge.attribute
 
 #' @export
 get.adjacency         <- igraph::get.adjacency
