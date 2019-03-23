@@ -18,7 +18,12 @@ library(idalgo)
 #
 fig1   <- graph.formula(W - +X, W - +Z, X - +Z, Z - +Y, X - +Y, Y - +X, simplify = FALSE)
 fig1   <- set.edge.attribute(graph = fig1, name = "description", index = c(5, 6), value = "U")
-fig1   <- set_graph_attr(fig1, name = "layout", matrix(nrow = 4,ncol = 2,byrow = T, data = c(1, 1,0, 0,2, 0,2, 3)))
+
+matri            <- matrix(nrow = 4,ncol = 2,byrow = T, data = c(1, 1,0, 0,2, 0,2, 3))
+
+row.names(matri) <- c("W","X","Z","Y")
+
+fig1             <- set_graph_attr(fig1, name = "layout", matri)
 
 #NODES  <- names(V(fig1))
 

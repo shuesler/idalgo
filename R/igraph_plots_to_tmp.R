@@ -4,6 +4,8 @@
 #' @export
 igraph_plots_to_tmp <- function(igraphs, open = FALSE) {
 
+  igraphs   <- map(igraphs, ~mat_update(.x))
+
   plotliste <- list()
 
   for (i in seq_along(igraphs)) {
@@ -24,3 +26,10 @@ igraph_plots_to_tmp <- function(igraphs, open = FALSE) {
 
   plotliste %>% purrr::as_vector()
 }
+
+
+
+
+
+
+

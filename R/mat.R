@@ -10,10 +10,14 @@ mat_from_gml <- function(gml) {
 #' @export
 mat_update <- function(x) {
 
-  tmp_lay <- as.data.frame(igraph::get.graph.attribute(x, "layout"))
-  tmp_nam <- igraph::get.vertex.attribute(x, "name")
-  x       <- igraph::delete_graph_attr(x, "layout")
-  x       <- igraph::set_graph_attr(x, "layout", as.matrix(tmp_lay[tmp_nam,]))
+  if(!is.null(get.graph.attribute(x, "layout"))) {
+
+    tmp_lay <- as.data.frame(igraph::get.graph.attribute(x, "layout"))
+    tmp_nam <- igraph::get.vertex.attribute(x, "name")
+    x       <- igraph::delete_graph_attr(x, "layout")
+    x       <- igraph::set_graph_attr(x, "layout", as.matrix(tmp_lay[tmp_nam,]))
+  }
+
   x
 
 }
