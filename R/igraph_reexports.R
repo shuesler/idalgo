@@ -13,6 +13,9 @@ edges                 <- igraph::get.edges
 edge.attributes       <- igraph::edge.attributes
 
 #' @export
+set.graph.attribute   <- igraph::set.graph.attribute
+
+#' @export
 get.edges             <- igraph::get.edges
 
 #' @export

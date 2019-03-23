@@ -1,0 +1,69 @@
+---
+title: "freitag"
+author: "shs"
+date: "23 3 2019"
+output: 
+  pdf_document:
+    highlight: monochrome
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment="#>")
+```
+
+
+```{r}
+library(idalgo)
+
+gml   <- read.gml("C:\\Users\\shs\\Desktop\\graph_ed\\2.gml", coords = T)
+
+G     <- parse.graphml("C:\\Users\\shs\\Desktop\\graph_ed\\2.graphml")
+
+G     <- set_graph_attr(G, "layout", mat_from_gml(gml))
+
+plot(G)
+```
+
+
+```{r}
+sils  <- idalgo::latent.projection(G, "gene")
+```
+
+
+```{r}
+get.graph.attribute(G, "layout")
+```
+
+
+```{r}
+
+G    <- norma_layout(G)
+sils <- norma_layout(sils)
+
+```
+
+
+```{r}
+E(sils)[is_edge_U(sils)]
+```
+
+
+```{r}
+sils <- set_edge_attr(sils, "curved", E(sils), 0)
+sils <- set_edge_attr(sils, "curved", E(sils)[is_edge_U(sils)], .2)
+
+
+sils <- set_edge_attr(sils, "color", E(sils), "black")
+sils <- set_edge_attr(sils, "color", E(sils)[is_edge_U(sils)], "red")
+```
+
+
+```{r}
+plot(G)
+plot(sils)
+```
+
+
+
+
+
