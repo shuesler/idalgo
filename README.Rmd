@@ -1,5 +1,5 @@
 ---
-title: "README"
+title: "IDALGO"
 author: "shs"
 date: "24 3 2019"
 output: html_document
@@ -12,17 +12,54 @@ library(idalgo)
 
 
 ```{r}
-gml   <- read.gml(here::here("labor", "hernan_book_graphs", "20.3.gml"), coords = T)
+gml          <- read.gml(here::here("labor", "smoking", "smoking.gml"), coords = T)
 
-G     <- parse.graphml(here::here("labor", "hernan_book_graphs", "20.3.graphml"))
+G            <- parse.graphml(here::here("labor", "smoking", "smoking.graphml"))
 
-G     <- set_graph_attr(G, "layout", mat_from_gml(gml))
+G            <- set_graph_attr(G, "layout", mat_from_gml(gml))
 
-G.lat <- latent.projection(G, "U1")
+G.lat        <- latent.projection(G, "gene")
 
-plot(G)
-plot(G.lat)
-plot(mark_U(G.lat))
+G.lat.marked <- mark_U(G.lat)
 
 ```
+
+
+```{r}
+plot(G)
+plot(G.lat)
+plot(G.lat.marked)
+```
+
+
+```{r}
+result <- causal.effect(y = "Y", x = "X", z = NULL, G = G.lat.marked, expr = TRUE, steps = TRUE, primes = T)
+```
+
+
+```{r, results='asis'}
+cat(paste0("$$", result$P, "$$"))
+```
+
+
+```{r, eval=FALSE}
+tmp2 <- aio(result$steps)
+```
+
+```{r, include=FALSE, echo=FALSE}
+tmp2 <- aio(result$steps)
+```
+
+
+```{r}
+collapsibleTree::collapsibleTree(tmp2,
+                                 fill        = "Farbe",
+                                 tooltip     = TRUE,
+                                 tooltipHtml = "Bild",
+                                 collapsed   = F,
+                                 height      = 2000,
+                                 width       = 1500)
+
+```
+
 
