@@ -3,6 +3,7 @@
 ^credentials\.json$
 ^token\.pickle$
 ^labor$
+^distill$
 ^docs$
 ^_pkgdown\.yml$
 ^idalgo\.Rproj$

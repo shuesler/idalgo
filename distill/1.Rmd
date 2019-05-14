@@ -1,0 +1,95 @@
+---
+title: "Idalgo"
+description: |
+  A new article created using the Distill format.
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=FALSE)
+library(idalgo)
+```
+
+Distill is a publication @Langford2008 format for scientific and technical writing, native to the web. 
+
+Learn more about using @Bareinboim2015 Distill for R Markdown at <https://rstudio.github.io/distill>.
+
+
+```{r}
+gml          <- read.gml(here::here("smoking", "smoking.gml"), coords = T)
+
+G            <- parse.graphml(here::here("smoking", "smoking.graphml"))
+
+G            <- set_graph_attr(G, "layout", mat_from_gml(gml))
+
+G.lat        <- latent.projection(G, "gene")
+
+G.lat.marked <- mark_U(G.lat)
+
+```
+
+```{r}
+plot(G)
+plot(G.lat)
+plot(G.lat.marked)
+```
+
+
+```{r}
+result <- causal.effect(y = "Y", x = "X", z = NULL, G = G.lat.marked, expr = TRUE, steps = TRUE, primes = T)
+```
+
+
+```{r, results='asis'}
+cat(paste0("$$", result$P, "$$"))
+```
+
+
+```{r, eval=FALSE}
+tmp2 <- aio(result$steps)
+```
+
+```{r, include=FALSE, echo=FALSE}
+tmp2 <- aio(result$steps)
+```
+
+```{r, layout="l-screen-inset"}
+collapsibleTree::collapsibleTree(tmp2,
+                                 fill        = "Farbe",
+                                 tooltip     = TRUE,
+                                 tooltipHtml = "Bild",
+                                 collapsed   = F,
+                                 height      = 2000,
+                                 width       = 1500)
+
+```
+
+
+
+---
+
+
+```{r}
+library(ggraph)
+#library(ggdag)
+
+G <- norma_layout(G)
+
+ggraph(G, layout = "manual", node.positions = as.data.frame(get.graph.attribute(G, "layout"))) +
+  geom_edge_link(
+    arrow     = arrow(length = unit(4, "mm"), type = "closed"),
+    start_cap = circle(10, "mm"),
+    end_cap   = circle(10, "mm")
+  ) +
+  geom_node_label(aes(label = name), size = 6,)
+
+```
+
+

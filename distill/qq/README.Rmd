@@ -7,24 +7,26 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(causaleffect)
 library(idalgo)
+parse.joint <- causaleffect:::parse.joint
 ```
 
 
 ```{r}
-gml          <- read.gml(here::here("labor", "smoking", "smoking.gml"), coords = T)
+gml          <- read.gml("C:/Users/shs/Desktop/pearl2009_119.gml", coords = T)
 
-G            <- parse.graphml(here::here("labor", "smoking", "smoking.graphml"))
+G            <- parse.graphml("C:/Users/shs/Desktop/pearl2009_119.graphml")
 
 G            <- set_graph_attr(G, "layout", mat_from_gml(gml))
 
-G.lat        <- latent.projection(G, "gene")
+G.lat        <- latent.projection(G, c("U1", "U2"))
 
 G.lat.marked <- mark_U(G.lat)
 
 #G.obs        <- observed.graph(G.lat)
 #topo         <- topological.sort(G.obs)
-#G.remove.x   <- remove_node(G.lat, "x")
+#G.remove.x   <- induced.subgraph(G, v[!(v %in% x)])
 #s            <- ccomponents(G.remove.x, topo)
 
 ```
@@ -36,9 +38,18 @@ plot(G.lat)
 plot(G.lat.marked)
 ```
 
+```{r}
+result2 <- causal.effect(y = "Y", x = c("X1", "X2"), z = NULL, G = G.lat.marked, expr = TRUE, steps = TRUE, primes = F)
+```
+
+
+```{r, results='asis'}
+cat(paste0("$$", result2$P, "$$"))
+```
+
 
 ```{r}
-result <- causal.effect(y = "Y", x = "X", z = NULL, G = G.lat.marked, expr = TRUE, steps = TRUE, primes = T)
+result <- causal.effect(y = "Y", x = c("X1", "X2"), z = NULL, G = G.lat.marked, expr = TRUE, steps = TRUE, primes = T)
 ```
 
 

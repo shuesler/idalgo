@@ -474,6 +474,18 @@ c.components <- function(G, topo) {
 
 }
 
+#' @export
+ccomponents  <- c.components
+
+###' @export
+##remove_node <- function(graph, node) {
+##
+##  v <- get.vertex.attribute(graph, "name")
+##  induced.subgraph(graph, v[!(v %in% node)])
+##
+##}
+##
+
 ##################################################################################################################################
 
 #' @export

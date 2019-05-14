@@ -1,0 +1,97 @@
+---
+title: "silsi2"
+author: "shs"
+date: "13 10 2018"
+output:
+  pdf_document:
+    keep_tex: no
+  github_document:
+header-includes:
+   - \usepackage{lscape}
+   - \usepackage{graphicx}
+   - \usepackage{algorithmic}
+   - \usepackage{algorithm}
+   - \usepackage{multirow}
+   - \usepackage{dcolumn}
+   - \usepackage{array,ragged2e}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results="hold")
+library(magrittr)
+```
+
+
+```{r}
+igraph::graph.formula(x -+ z,
+                      z -+ y,
+                      x -+ y,
+                      y -+ x,
+                      simplify = FALSE) -> fig1
+
+
+igraph::E(fig1)
+igraph::V(fig1)
+
+# x->z 1
+# z->y 2
+# g->x 3
+
+# x->g 4
+# g->y 5
+# y->g 6
+
+
+fig1 <- igraph::set.edge.attribute(
+  graph = fig1,
+  name  = "description",
+  index = c(3,4),
+  value = "U")
+```
+
+
+```{r, out.width="50%", out.height="50%", fig.align='center'}
+plot(fig1)
+```
+
+
+```{r}
+G     <- fig1
+G.obs <- causaleffect:::observed.graph(G)
+```
+
+
+```{r, out.width="50%", out.height="50%", fig.align='center'}
+plot(G.obs)
+```
+
+
+```{r}
+G.obs        <- observed.graph(G)
+topo         <- topological.sort(G.obs)
+G.remove.x   <- remove_node(G, "x")
+s            <- ccomponents(G.remove.x, topo)
+```
+
+
+```{r}
+
+topo  <- igraph::get.vertex.attribute(G, "name")[topo]
+topo
+
+causaleffect:::c.components(G, topo)
+```
+
+
+```{r}
+causaleffect::causal.effect(y = "y", x="x", G = G, prime=T) %>% katexR::katex()
+```
+
+
+```{r}
+unclass(G.obs)[[10]]$myid
+unclass(G)[[10]]$myid
+```
+
+
+# Sie haben Bug drin (Sollten zumindest darauf hinweisen)
